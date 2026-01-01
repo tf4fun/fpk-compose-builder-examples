@@ -1,0 +1,9 @@
+services:
+  whoami:
+    image: traefik/whoami
+    container_name: whoami
+    network_mode: bridge
+    ports:
+      - "10080:80"
+    restart: unless-stopped
+    stop_signal: SIGKILL
