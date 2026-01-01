@@ -1,0 +1,29 @@
+x-fnpack:
+  manifest:
+    appname: bilibili
+    desc: 一键跳转到B站
+    maintainer: unknown
+    distributor: unknown
+
+configs:
+  redirect:
+    content: |
+      #!/bin/sh
+      echo "Status: 302 Found"
+      echo "Location: https://www.bilibili.com/"
+      echo ""
+
+services:
+  bilibili:
+    image: busybox:uclibc
+    container_name: bilibili-redirect
+    network_mode: bridge
+    ports:
+      - "3000:3000"
+    configs:
+      - source: redirect
+        target: /www/index.cgi
+        mode: 0755
+    command: httpd -f -p 3000 -h /www
+    restart: unless-stopped
+    stop_signal: SIGKILL
