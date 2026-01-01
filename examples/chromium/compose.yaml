@@ -50,7 +50,7 @@ x-fnpack:
         "docker-chromium.Application": {
           "title": "浏览器",
           "desc": "浏览器",
-          "icon": "images/icon-{0}.PNG",
+          "icon": "images/icon-{0}.png",
           "type": "url",
           "url": "/chromium/",
           "allUsers": false

@@ -12,7 +12,9 @@ x-fnpack:
         "bilibili.Application": {
           "title": "bilibili",
           "desc": "bilibili",
-          "icon": "images/icon-{0}.PNG",
+          "icon": "images/icon-{0}.png",
+          "protocol": "http",
+          "port": "3000",
           "type": "url",
           "url": "/cgi-bin/index.cgi",
           "allUsers": true
