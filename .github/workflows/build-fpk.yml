@@ -1,0 +1,77 @@
+name: Build FPK Packages
+
+on:
+  push:
+    branches:
+      - main
+      - 'dev_*'
+    tags:
+      - 'v*.*.*'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    outputs:
+      apps: ${{ steps.find-apps.outputs.apps }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Find all apps in examples
+        id: find-apps
+        run: |
+          apps=$(ls -d examples/*/ 2>/dev/null | xargs -n1 basename | jq -R -s -c 'split("\n")[:-1]')
+          echo "Found apps: $apps"
+          echo "apps=$apps" >> $GITHUB_OUTPUT
+
+  build:
+    needs: discover
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        app: ${{ fromJson(needs.discover.outputs.apps) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build FPK Package
+        uses: tf4fun/fpk-compose-builder@main
+        id: build
+        with:
+          input-dir: ./examples/${{ matrix.app }}
+          output-dir: ./dist/${{ matrix.app }}
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: fpk-${{ matrix.app }}
+          path: ./dist/${{ matrix.app }}/*.fpk
+
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./artifacts
+          pattern: fpk-*
+
+      - name: Collect FPK files
+        run: |
+          mkdir -p release
+          find ./artifacts -name "*.fpk" -exec cp {} ./release/ \;
+          ls -la ./release/
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ./release/*.fpk
+          generate_release_notes: true
