@@ -4,7 +4,7 @@ x-fnpack:
     desc: 一键跳转到B站
     maintainer: unknown
     distributor: unknown
-    desktop_applaunchname: "docker-bilibili.Application"
+    desktop_applaunchname: "bilibili.Application"
 
   app/ui/config: |
     {
