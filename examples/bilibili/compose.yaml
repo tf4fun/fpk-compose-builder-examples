@@ -4,6 +4,21 @@ x-fnpack:
     desc: 一键跳转到B站
     maintainer: unknown
     distributor: unknown
+    desktop_applaunchname: "docker-bilibili.Application"
+
+  app/ui/config: |
+    {
+      ".url": {
+        "docker-bilibili.Application": {
+          "title": "bilibili",
+          "desc": "bilibili",
+          "icon": "images/icon-{0}.PNG",
+          "type": "url",
+          "url": "/cgi-bin/index.cgi",
+          "allUsers": true
+        }
+      }
+    }
 
 configs:
   redirect:
@@ -22,7 +37,7 @@ services:
       - "3000:3000"
     configs:
       - source: redirect
-        target: /www/index.cgi
+        target: /www/cgi-bin/index.cgi
         mode: 0755
     command: httpd -f -p 3000 -h /www
     restart: unless-stopped
