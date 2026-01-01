@@ -61,7 +61,7 @@ x-fnpack:
   config/resource: |
     {
       "docker-project": {
-        "projects": [{"name": "chromium","path": "app"}]
+        "projects": [{"name": "chromium","path": "docker"}]
       },
       "data-share": {
         "shares": [

@@ -1,0 +1,64 @@
+x-fnpack:
+  manifest:
+    appname: "docker-nocodb"
+    desc: "NocoDB - 开源 Airtable 替代品"
+    display_name: "NocoDB"
+
+  wizard/install: |
+    [
+      {
+        "stepTitle": "Nocodb 参数配置",
+        "items": [
+          {
+            "type": "text",
+            "helpText": "请输入有效的邮箱地址",
+            "field": "wizard_admin_email",
+            "label": "管理员邮箱",
+            "rules": [
+              {"required":true,"message":"此字段不能为空"},
+              {"min":5,"max":100,"message":"长度应在5-100个字符之间"},
+              {"pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$","message": "需要为合法的邮箱地址"}
+            ]
+          },
+          {
+            "type": "password",
+            "helpText": "长度至少为8个字符, 需包含一个大写字母、一个小写字母、一个数字和一个特殊字符",
+            "field": "wizard_admin_password",
+            "label": "管理员密码",
+            "rules": [
+              {"required":true,"message":"此字段不能为空"},
+              {"min":8,"max":50,"message":"长度应在8-50个字符之间"},
+              {"pattern": "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+=-]).{8,}$","message": "密码需包含大小写字母、数字和特殊字符"}
+            ]
+          }
+        ]
+      }
+    ]
+
+  config/resource: |
+    {
+      "docker-project": {
+        "projects": [{"name": "nocodb","path": "docker"}]
+      },
+      "data-share": {
+        "shares": [
+            {"name": "nocodb","permission": {"rw": ["docker-nocodb"]}},
+            {"name": "nocodb/data","permission": {"rw": ["docker-nocodb"]}}
+        ]
+      }
+    }
+
+
+services:
+  nocodb:
+    image: nocodb/nocodb:latest
+    container_name: nocodb
+    restart: always
+    network_mode: bridge
+    environment:
+      - NC_ADMIN_EMAIL=${wizard_admin_email}
+      - NC_ADMIN_PASSWORD=${wizard_admin_password}
+    ports:
+      - 8989:8080
+    volumes:
+      - /var/apps/docker-nocodb/shares/nocodb/data:/usr/app/data
