@@ -4,10 +4,7 @@ x-fnpack:
       {
         "stepTitle": "Lobe Chat 配置",
         "items": [
-          {
-            "type": "tips",
-            "helpText": "请配置 DeepSeek API Key 以启用 AI 对话功能。您可以在 https://platform.deepseek.com 获取 API Key。"
-          },
+          {"type": "tips","helpText": "请配置 DeepSeek API Key 以启用 AI 对话功能。您可以在 https://platform.deepseek.com 获取 API Key。"},
           {
             "type": "text",
             "helpText": "DeepSeek API Key",
@@ -15,7 +12,7 @@ x-fnpack:
             "label": "DeepSeek API Key",
             "rules": [
               {"required":true,"message":"此字段不能为空"},
-              {"min":10,"max":50,"message":"长度应在10-50个字符之间"},
+              {"min":10,"max":50,"message":"长度应在10-50个字符之间"}
             ]
           }
         ]
