@@ -9,7 +9,7 @@ x-fnpack:
   app/ui/config: |
     {
       ".url": {
-        "docker-bilibili.Application": {
+        "bilibili.Application": {
           "title": "bilibili",
           "desc": "bilibili",
           "icon": "images/icon-{0}.PNG",
