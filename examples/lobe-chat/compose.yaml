@@ -10,16 +10,12 @@ x-fnpack:
           },
           {
             "type": "text",
-            "helpText": "DeepSeek API Key，以 sk- 开头",
+            "helpText": "DeepSeek API Key",
             "field": "wizard_deepseek_api_key",
             "label": "DeepSeek API Key",
             "rules": [
-              {
-                "required": true,
-                "message": "请输入有效的 API Key",
-                "min": 10,
-                "max": 100
-              }
+              {"required":true,"message":"此字段不能为空"},
+              {"min":10,"max":50,"message":"长度应在10-50个字符之间"},
             ]
           }
         ]
